@@ -35,7 +35,7 @@ module.exports = function (Model, options) {
         if (token && token.userId) {
           return true;
         }
-      } catch (ex) {}
+      } catch (ex) { }
     }
 
     var adminIps =
@@ -82,20 +82,23 @@ module.exports = function (Model, options) {
     let smsServiceProvider = Model.app.get('smsServiceProvider');
     let smsConfig = Model.app.get('sms')[smsServiceProvider];
     switch (smsServiceProvider) {
-      case 'swift':
+      case 'gcnotify':
         try {
-          let url = `${smsConfig['apiUrlPrefix']}${
-            smsConfig['accountKey']
-          }/${encodeURIComponent(to)}`;
+          let url = smsConfig[baseUrl];
+          url = url.concat(smsConfig[baseUrl]);
           let body = {
-            MessageBody: textBody,
+            phone_number: to,
+            template_id: "059b4d59-1d9e-4218-92f6-e77be7df2809",
+            personalization: {
+              body_text: textBody,
+            },
           };
           if (data && data.id) {
             body.Reference = data.id;
           }
           await axios.post(url, body, {
             headers: {
-              'Content-Type': 'application/json;charset=UTF-8',
+              'Authorization': smsConfig[accountKey],
             },
           });
         } catch (ex) {
@@ -200,10 +203,10 @@ module.exports = function (Model, options) {
         /\{subscription_confirmation_code\}/gi,
         data.confirmationRequest.confirmationCode
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(/\{service_name\}/gi, data.serviceName);
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       if (output.match(/\{unsubscription_service_names\}/i)) {
         let serviceNames = _.union(
@@ -215,11 +218,11 @@ module.exports = function (Model, options) {
         output = output.replace(
           /\{unsubscription_service_names\}/gi,
           pluralize('service', serviceNames.length) +
-            ' ' +
-            toSentence(serviceNames)
+          ' ' +
+          toSentence(serviceNames)
         );
       }
-    } catch (ex) {}
+    } catch (ex) { }
     let httpHost;
     try {
       if (httpCtx.req) {
@@ -234,67 +237,67 @@ module.exports = function (Model, options) {
         httpHost = httpCtx.instance.httpHost;
       }
       output = output.replace(/\{http_host\}/gi, httpHost);
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{rest_api_root\}/gi,
         Model.app.get('restApiRoot')
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(/\{subscription_id\}/gi, data.id);
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{unsubscription_code\}/gi,
         data.unsubscriptionCode
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{unsubscription_url\}/gi,
         httpHost +
-          Model.app.get('restApiRoot') +
-          '/subscriptions/' +
-          data.id +
-          '/unsubscribe?unsubscriptionCode=' +
-          data.unsubscriptionCode
+        Model.app.get('restApiRoot') +
+        '/subscriptions/' +
+        data.id +
+        '/unsubscribe?unsubscriptionCode=' +
+        data.unsubscriptionCode
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{unsubscription_all_url\}/gi,
         httpHost +
-          Model.app.get('restApiRoot') +
-          '/subscriptions/' +
-          data.id +
-          '/unsubscribe?unsubscriptionCode=' +
-          data.unsubscriptionCode +
-          '&additionalServices=_all'
+        Model.app.get('restApiRoot') +
+        '/subscriptions/' +
+        data.id +
+        '/unsubscribe?unsubscriptionCode=' +
+        data.unsubscriptionCode +
+        '&additionalServices=_all'
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{subscription_confirmation_url\}/gi,
         httpHost +
-          Model.app.get('restApiRoot') +
-          '/subscriptions/' +
-          data.id +
-          '/verify?confirmationCode=' +
-          data.confirmationRequest.confirmationCode
+        Model.app.get('restApiRoot') +
+        '/subscriptions/' +
+        data.id +
+        '/verify?confirmationCode=' +
+        data.confirmationRequest.confirmationCode
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{unsubscription_reversion_url\}/gi,
         httpHost +
-          Model.app.get('restApiRoot') +
-          '/subscriptions/' +
-          data.id +
-          '/unsubscribe/undo?unsubscriptionCode=' +
-          data.unsubscriptionCode
+        Model.app.get('restApiRoot') +
+        '/subscriptions/' +
+        data.id +
+        '/unsubscribe/undo?unsubscriptionCode=' +
+        data.unsubscriptionCode
       );
-    } catch (ex) {}
+    } catch (ex) { }
 
     // for backward compatibilities
     try {
@@ -302,25 +305,25 @@ module.exports = function (Model, options) {
         /\{confirmation_code\}/gi,
         data.confirmationRequest.confirmationCode
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(/\{serviceName\}/gi, data.serviceName);
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{restApiRoot\}/gi,
         Model.app.get('restApiRoot')
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(/\{subscriptionId\}/gi, data.id);
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{unsubscriptionCode\}/gi,
         data.unsubscriptionCode
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       if (data.data) {
         // substitute all other tokens with matching data.data properties
@@ -333,11 +336,11 @@ module.exports = function (Model, options) {
               if (val) {
                 output = output.replace(e, val);
               }
-            } catch (ex) {}
+            } catch (ex) { }
           });
         }
       }
-    } catch (ex) {}
+    } catch (ex) { }
     return output;
   };
 
@@ -347,7 +350,7 @@ module.exports = function (Model, options) {
       token =
         ctx.options.httpContext.args.options &&
         ctx.options.httpContext.args.options.accessToken;
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       if (ctx.instance) {
         ctx.instance.updated = new Date();
@@ -384,7 +387,7 @@ module.exports = function (Model, options) {
           }
         }
       }
-    } catch (ex) {}
+    } catch (ex) { }
     next();
   };
 
@@ -411,10 +414,10 @@ module.exports = function (Model, options) {
     let res;
     try {
       res = _.merge({}, Model.app.get(configName));
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       res = _.merge({}, res, data.value);
-    } catch (ex) {}
+    } catch (ex) { }
     next && next(null, res);
     return res;
   };
