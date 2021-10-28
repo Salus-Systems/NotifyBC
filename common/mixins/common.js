@@ -89,9 +89,9 @@ module.exports = function (Model, options) {
           let body = {
             phone_number: to,
             template_id: "059b4d59-1d9e-4218-92f6-e77be7df2809",
-            personalization: {
+            personalisation: {
               body_text: textBody,
-            },
+            }
           };
           if (data && data.id) {
             body.Reference = data.id;
