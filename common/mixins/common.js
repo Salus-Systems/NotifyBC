@@ -100,7 +100,7 @@ module.exports = function (Model, options) {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': smsConfig[accountKey]
-            },
+            }
           });
         } catch (ex) {
           return cb && cb(ex);
