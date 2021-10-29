@@ -85,8 +85,6 @@ module.exports = function (Model, options) {
       case 'gcnotify':
         try {
           let url = "https://api.notification.canada.ca";
-          let to = '250-744-7721';
-          let textBody = 'TestTesTest';
           url = url.concat("/v2/notifications/sms");
           let body = {
             'phone_number': to,
