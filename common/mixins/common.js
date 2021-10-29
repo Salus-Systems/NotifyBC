@@ -84,13 +84,13 @@ module.exports = function (Model, options) {
     switch (smsServiceProvider) {
       case 'gcnotify':
         try {
-          let url = "https://api.notification.canada.ca";
-          url = url.concat("/v2/notifications/sms");
+          let url = smsConfig[baseUrl];
+          url = url.concat(smsConfig[api]);
           let body = {
-            'phone_number': to,
+            'phone_number': '2507447721',
             'template_id': '059b4d59-1d9e-4218-92f6-e77be7df2809',
             'personalisation': {
-              'body_text': textBody
+              'body_text': 'textBody test'
             }
           };
           //          if (data && data.id) {
@@ -99,7 +99,7 @@ module.exports = function (Model, options) {
           await axios.post(url, body, {
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'ApiKey-v1 e0c01264-e1d1-429c-ac95-ee2d4c03af38'
+              'Authorization': smsConfig[accountKey]
             }
           });
         } catch (ex) {
