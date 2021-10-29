@@ -84,22 +84,19 @@ module.exports = function (Model, options) {
     switch (smsServiceProvider) {
       case 'gcnotify':
         try {
-          let url = smsConfig[baseUrl];
-          url = url.concat(smsConfig[api]);
+          let url = smsConfig['baseUrl'];
+          url = url.concat(smsConfig['api']);
           let body = {
-            'phone_number': '2507447721',
+            'phone_number': to,
             'template_id': '059b4d59-1d9e-4218-92f6-e77be7df2809',
             'personalisation': {
-              'body_text': 'textBody test'
+              'body_text': textBody
             }
           };
-          //          if (data && data.id) {
-          //            body.Reference = data.id;
-          //          }
           await axios.post(url, body, {
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': smsConfig[accountKey]
+              'Authorization': smsConfig['accountKey']
             }
           });
         } catch (ex) {
