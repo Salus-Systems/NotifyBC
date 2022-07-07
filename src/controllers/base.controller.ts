@@ -63,6 +63,27 @@ export class BaseController {
     const smsProvider = this.appConfig.sms.provider;
     const smsConfig = this.appConfig.sms.providerSettings[smsProvider];
     switch (smsProvider) {
+      case 'gcnotify': {
+        let url = smsConfig['baseUrl'];
+        url = url.concat(smsConfig['api']);
+        let body = {
+          phone_number: to,
+          template_id: '059b4d59-1d9e-4218-92f6-e77be7df2809',
+          personalisation: {
+            body_text: textBody,
+          },
+        };
+        let req: any = axios.post;
+        if (BaseController.smsLimiter) {
+          req = BaseController.smsLimiter.wrap(req);
+        }
+        return req(url, body, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: smsConfig['accountKey'],
+          },
+        });
+      }
       case 'swift': {
         const url = `${smsConfig['apiUrlPrefix']}${
           smsConfig['accountKey']

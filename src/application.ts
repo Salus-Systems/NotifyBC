@@ -25,6 +25,7 @@ import {
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
+import * as dotenv from 'dotenv';
 import fs from 'fs';
 import * as _ from 'lodash';
 import path from 'path';
@@ -38,6 +39,7 @@ import {
 } from './authn-strategies';
 import {MySequence} from './sequence';
 import {SecuritySpecEnhancer} from './services';
+dotenv.config();
 
 export {ApplicationConfig};
 
