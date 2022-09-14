@@ -123,6 +123,7 @@ module.exports = function (Model, options) {
           }
         );
     }
+    await delay(1000);
   };
 
   let nodemailer = require('nodemailer');
@@ -420,4 +421,8 @@ module.exports = function (Model, options) {
     return res;
   };
 };
+
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
 module.exports.axios = axios;
