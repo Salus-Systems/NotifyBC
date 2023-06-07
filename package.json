@@ -54,7 +54,7 @@
     "istanbul": "^1.0.0-alpha.1",
     "jasmine": "^2.6.0",
     "smtp-connection": "^4.0.2",
-    "supertest": "^3.0.0",
+    "supertest": "2.0.1",
     "webpack": "^3.8.1",
     "webpack-dev-middleware": "^1.12.0",
     "webpack-hot-middleware": "^2.20.0"
