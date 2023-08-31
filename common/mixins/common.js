@@ -123,7 +123,7 @@ module.exports = function (Model, options) {
           }
         );
     }
-    await delay(1000);
+    await delay(100);
   };
 
   let nodemailer = require('nodemailer');
@@ -191,6 +191,7 @@ module.exports = function (Model, options) {
         break;
       }
     }
+    await delay(100);
     cb && cb(null, info);
     return info;
   };
