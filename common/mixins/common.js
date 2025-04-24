@@ -253,24 +253,25 @@ module.exports = function (Model, options) {
       );
     } catch (ex) { }
     try {
+      // debug log, to remove
+      console.log('httpHost', httpHost);
       output = output.replace(
         /\{unsubscription_url\}/gi,
         httpHost +
-        Model.app.get('restApiRoot') +
-        '/subscriptions/' +
+        '/unsubscribe.html?subscriptionId=' +
         data.id +
-        '/unsubscribe?unsubscriptionCode=' +
+        '&unsubscriptionCode=' +
         data.unsubscriptionCode
       );
     } catch (ex) { }
     try {
+      console.log('httpHost', httpHost);
       output = output.replace(
         /\{unsubscription_all_url\}/gi,
         httpHost +
-        Model.app.get('restApiRoot') +
-        '/subscriptions/' +
+        '/unsubscribe.html?subscriptionId=' +
         data.id +
-        '/unsubscribe?unsubscriptionCode=' +
+        '&unsubscriptionCode=' +
         data.unsubscriptionCode +
         '&additionalServices=_all'
       );
