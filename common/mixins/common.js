@@ -253,11 +253,11 @@ module.exports = function (Model, options) {
       );
     } catch (ex) { }
     try {
-      // debug log, to remove
-      console.log('httpHost', httpHost);
+      // notification link adds http:// prefix, strip it here
+      let cleanHttpHost = httpHost ? httpHost.replace(/^https?:\/\//, '') : '';
       output = output.replace(
         /\{unsubscription_url\}/gi,
-        httpHost +
+        cleanHttpHost +
         '/unsubscribe.html?subscriptionId=' +
         data.id +
         '&unsubscriptionCode=' +
@@ -265,10 +265,11 @@ module.exports = function (Model, options) {
       );
     } catch (ex) { }
     try {
-      console.log('httpHost', httpHost);
+      // notification link adds http:// prefix, strip it here
+      let cleanHttpHost = httpHost ? httpHost.replace(/^https?:\/\//, '') : '';
       output = output.replace(
         /\{unsubscription_all_url\}/gi,
-        httpHost +
+        cleanHttpHost +
         '/unsubscribe.html?subscriptionId=' +
         data.id +
         '&unsubscriptionCode=' +
