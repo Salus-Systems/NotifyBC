@@ -289,13 +289,13 @@ module.exports = function (Model, options) {
       );
     } catch (ex) { }
     try {
+      let cleanHttpHost = httpHost ? httpHost.replace(/^https?:\/\//, '') : '';
       output = output.replace(
         /\{unsubscription_reversion_url\}/gi,
-        httpHost +
-        Model.app.get('restApiRoot') +
-        '/subscriptions/' +
+        cleanHttpHost +
+        '/resubscribe.html?subscriptionId=' +
         data.id +
-        '/unsubscribe/undo?unsubscriptionCode=' +
+        '&unsubscriptionCode=' +
         data.unsubscriptionCode
       );
     } catch (ex) { }
