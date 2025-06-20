@@ -253,11 +253,9 @@ module.exports = function (Model, options) {
       );
     } catch (ex) { }
     try {
-      // notification link adds http:// prefix, strip it here
-      let cleanHttpHost = httpHost ? httpHost.replace(/^https?:\/\//, '') : '';
       output = output.replace(
         /\{unsubscription_url\}/gi,
-        cleanHttpHost +
+        httpHost +
         '/unsubscribe.html?subscriptionId=' +
         data.id +
         '&unsubscriptionCode=' +
@@ -265,11 +263,9 @@ module.exports = function (Model, options) {
       );
     } catch (ex) { }
     try {
-      // notification link adds http:// prefix, strip it here
-      let cleanHttpHost = httpHost ? httpHost.replace(/^https?:\/\//, '') : '';
       output = output.replace(
         /\{unsubscription_all_url\}/gi,
-        cleanHttpHost +
+        httpHost +
         '/unsubscribe.html?subscriptionId=' +
         data.id +
         '&unsubscriptionCode=' +
@@ -289,10 +285,9 @@ module.exports = function (Model, options) {
       );
     } catch (ex) { }
     try {
-      let cleanHttpHost = httpHost ? httpHost.replace(/^https?:\/\//, '') : '';
       output = output.replace(
         /\{unsubscription_reversion_url\}/gi,
-        cleanHttpHost +
+        httpHost +
         '/resubscribe.html?subscriptionId=' +
         data.id +
         '&unsubscriptionCode=' +
