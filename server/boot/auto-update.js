@@ -1,33 +1,47 @@
-module.exports = function(app, cb) {
+module.exports = function (app, cb) {
   if (process.env.NOTIFYBC_NODE_ROLE === 'slave') {
-    return process.nextTick(cb)
+    return process.nextTick(cb);
   }
-  const pjson = require('../../package.json')
-  const semver = require('semver')
-  const targetVersion = pjson.dbSchemaVersion
+  const pjson = require('../../package.json');
+  const semver = require('semver');
+  const targetVersion = pjson.dbSchemaVersion;
   app.models.Configuration.findOrCreate(
     { where: { name: 'dbSchemaVersion' } },
     {
       name: 'dbSchemaVersion',
-      value: '0.0.0'
+      value: '0.0.0',
     },
-    function(err, data) {
-      const currentVersion = data.value
+    function (err, data) {
+      console.log(
+        '[auto-update] findOrCreate callback - err:',
+        err,
+        'data:',
+        data,
+      );
+      if (err) {
+        return cb(err);
+      }
+      if (!data || !data.value) {
+        return cb(
+          new Error('Failed to get or create dbSchemaVersion configuration'),
+        );
+      }
+      const currentVersion = data.value;
       if (
         semver.major(targetVersion) === semver.major(currentVersion) &&
         semver.minor(targetVersion) > semver.minor(currentVersion)
       ) {
-        app.dataSources.db.autoupdate(function(err, result) {
+        app.dataSources.db.autoupdate(function (err, result) {
           if (err) {
-            throw err
+            throw err;
           } else {
-            data.updateAttribute('value', targetVersion)
-            return cb()
+            data.updateAttribute('value', targetVersion);
+            return cb();
           }
-        })
+        });
       } else {
-        return cb()
+        return cb();
       }
-    }
-  )
-}
+    },
+  );
+};
