@@ -191,6 +191,7 @@ module.exports = function (Model, options) {
         break;
       }
     }
+    await delay(1000);
     cb && cb(null, info);
     return info;
   };
