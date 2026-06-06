@@ -241,7 +241,7 @@ module.exports = function (Notification) {
     this.patchAttributes(options.httpContext.args.data, options, callback)
   }
 
-  function sendPushNotification(ctx, data, cb) {
+  async function sendPushNotification(ctx, data, cb) {
     const inboundSmtpServerDomain =
       Notification.app.get('inboundSmtpServer').domain ||
       Notification.app.get('subscription').unsubscriptionEmailDomain
@@ -293,7 +293,7 @@ module.exports = function (Notification) {
           Notification.mailMerge(data.message.textBody, tokenData, ctx)
         switch (data.channel) {
           case 'sms':
-            Notification.sendSMS(data.userChannelId, textBody, tokenData, cb)
+            await Notification.sendSMS(data.userChannelId, textBody, tokenData, cb)
             break
           default:
             {
@@ -398,7 +398,7 @@ module.exports = function (Notification) {
                       return
                     }
                   }
-                  tasks.push(function (cb) {
+                  tasks.push(async function (cb) {
                     var notificationMsgCB = function (err) {
                       let res = {}
                       if (err) {
@@ -427,7 +427,7 @@ module.exports = function (Notification) {
                       )
                     switch (e.channel) {
                       case 'sms':
-                        Notification.sendSMS(
+                        await Notification.sendSMS(
                           e.userChannelId,
                           textBody,
                           tokenData,
